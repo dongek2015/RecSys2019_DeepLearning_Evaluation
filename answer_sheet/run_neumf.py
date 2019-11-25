@@ -73,16 +73,6 @@ def read_data_split_and_search_NeuCF(dataset_name):
 
 
 
-    collaborative_algorithm_list = [
-        Random,
-        TopPop,
-        UserKNNCFRecommender,
-        ItemKNNCFRecommender,
-        P3alphaRecommender,
-        RP3betaRecommender,
-        SLIMElasticNetRecommender
-    ]
-    collaborative_algorithm_list = []
 
     metric_to_optimize = "HIT_RATE"
 
@@ -93,38 +83,7 @@ def read_data_split_and_search_NeuCF(dataset_name):
     evaluator_test = EvaluatorNegativeItemSample(URM_test, URM_test_negative, cutoff_list=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
 
-    runParameterSearch_Collaborative_partial = partial(runParameterSearch_Collaborative,
-                                                       URM_train = URM_train,
-                                                       metric_to_optimize = metric_to_optimize,
-                                                       evaluator_validation_earlystopping = evaluator_validation,
-                                                       evaluator_validation = evaluator_validation,
-                                                       evaluator_test = evaluator_test,
-                                                       output_folder_path = output_folder_path,
-                                                       parallelizeKNN = False,
-                                                       allow_weighting = True,
-                                                       n_cases = 35)
 
-
-
-
-
-    # pool = multiprocessing.Pool(processes=int(multiprocessing.cpu_count()), maxtasksperchild=1)
-    # resultList = pool.map(runParameterSearch_Collaborative_partial, collaborative_algorithm_list)
-    #
-    # pool.close()
-    # pool.join()
-
-
-    for recommender_class in collaborative_algorithm_list:
-
-        try:
-
-            runParameterSearch_Collaborative_partial(recommender_class)
-
-        except Exception as e:
-
-            print("On recommender {} Exception {}".format(recommender_class, str(e)))
-            traceback.print_exc()
 
 
 
